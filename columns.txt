@@ -1,0 +1,6 @@
+pntindex	name	medium	year	theme	paint_type	height	width	catalognumber	price
+1	blue on chair	canvas	2003-01-01	acrylic	musicians	48	32	bg-0001	10000
+3	kingdavid2	canvas	2001-01-01	jewish	oil	72	48	bg-0003	12000
+
+bgpaintings.html -> bginput.php
+bgsearch.html -> bgquery.php
