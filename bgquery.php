@@ -15,12 +15,12 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
-} 
+}
 
 //name	medium	year	theme	paint_type	height	width	catalognumber	price
 if ($field == "year"){
 	$term = $term . "%";
-}		
+}
 $sql = ($term !== "*"?"SELECT * FROM painting WHERE $field LIKE '$term'":"SELECT * FROM painting");
 
 $result = $conn->query($sql);
@@ -39,7 +39,7 @@ if ($result->num_rows > 0) {
         echo "Cat. Code: " . $row['catalognumber'] . "<br>";
         echo "Price: " . $row['price'] . "<br><br>";
 		echo "<img src='./bgimages/$picture'>";
-		echo "<br><br>";	
+		echo "<br><br>";
 //		echo "<img src='./bgimages/kingdavid2.jpg'><br><br>";
     }
 } else {

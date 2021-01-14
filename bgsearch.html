@@ -44,14 +44,6 @@
 	            tags.innerHTML = "";
 
 							var form = document.createElement("form");
-							form.onsubmit = function(event) {
-								event.preventDefault();
-								var formData = new FormData();
-								formData.append("fields", category);
-								formData.append("term", event.target.childNodes[1].value);
-								ajaxPostFormPage("bgquery.php", formData);
-							};
-							tags.appendChild(form);
 
 	            var inputField = document.createElement("input");
 	            inputField.setAttribute("name", "term");
@@ -63,6 +55,15 @@
 							submitButton.className = "btn btn-primary";
 							submitButton.setAttribute("type", "submit");
 							form.appendChild(submitButton);
+
+							form.onsubmit = function(event) {
+								event.preventDefault();
+								var formData = new FormData();
+								formData.append("fields", category);
+								formData.append("term", inputField.value);
+								ajaxPostFormPage("bgquery.php", formData);
+							};
+							tags.appendChild(form);
 	        }
 	        else {
 	            tagsHeader.innerHTML = "Tags";
