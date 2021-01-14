@@ -14,49 +14,80 @@
 
 			<h3>Category</h3>
 			<div>
-				<button class="btn btn-secondary" onclick="selectCat('name')">Name</button>
-				<button class="btn btn-secondary" onclick="selectCat('medium')">Medium</button>
-				<button class="btn btn-secondary" onclick="selectCat('year')">Year</button>
-				<button class="btn btn-secondary" onclick="selectCat('theme')">Theme</button>
-				<button class="btn btn-secondary" onclick="selectCat('paint_type')">Paint</button>
-				<button class="btn btn-secondary" onclick="selectCat('height')">Height</button>
-				<button class="btn btn-secondary" onclick="selectCat('width')">Width</button>
-				<button class="btn btn-secondary" onclick="selectCat('catalognumber')">Code</button>
-				<button class="btn btn-secondary" onclick="selectCat('price')">Price</button>
+				<button class="btn btn-secondary" onclick="selectCat('name', 'text')">Name</button>
+				<button class="btn btn-secondary" onclick="selectCat('medium', 'dropdown')">Medium</button>
+				<button class="btn btn-secondary" onclick="selectCat('year', 'dropdown')">Year</button>
+				<button class="btn btn-secondary" onclick="selectCat('theme', 'dropdown')">Theme</button>
+				<button class="btn btn-secondary" onclick="selectCat('paint_type', 'dropdown')">Paint</button>
+				<button class="btn btn-secondary" onclick="selectCat('height', 'text')">Height</button>
+				<button class="btn btn-secondary" onclick="selectCat('width', 'text')">Width</button>
+				<button class="btn btn-secondary" onclick="selectCat('catalognumber', 'text')">Code</button>
+				<button class="btn btn-secondary" onclick="selectCat('price', 'text')">Price</button>
 			</div>
 
-			<h3>Tags</h3>
+			<h3 id="tags-header">Tags</h3>
 			<div id="tags"></div>
+			<br>
 
 			<!-- home button  -->
 			<a href="bgcatalog.html" class="btn btn-primary">Home</a>
 
 			<script>
 				var tags = document.getElementById("tags");
+				var tagsHeader = document.getElementById("tags-header");
 
 				// Called when category is selected
-				function selectCat(category) {
-					// Get tags
-					var formData = new FormData();
-					formData.append("fields", category);
-					ajaxPostForm("bgrequesttags.php", formData)
-						.then(data => {
-							tags.innerHTML = "";
-							for (var tag of data.tags) {
-								var tagButton = document.createElement("button");
-								tagButton.innerHTML = tag;
-								tagButton.className = "btn btn-secondary";
-								tagButton.setAttribute("data-tag", tag);
-								tagButton.onclick = function(event) {
-									var formDataTag = new FormData();
-									formDataTag.append("fields", category);
-									formDataTag.append("term", event.target.getAttribute("data-tag"));
-									ajaxPostFormPage("bgquery.php", formDataTag);
-								};
-								tags.appendChild(tagButton);
-							}
-						}
-					);
+				function selectCat(category, fieldType) {
+	        // Display a free text field if required
+	        if (fieldType == "text") {
+	            tagsHeader.innerHTML = "Search";
+	            tags.innerHTML = "";
+
+							var form = document.createElement("form");
+							form.onsubmit = function(event) {
+								event.preventDefault();
+								var formData = new FormData();
+								formData.append("fields", category);
+								formData.append("term", event.target.childNodes[1].value);
+								ajaxPostFormPage("bgquery.php", formData);
+							};
+							tags.appendChild(form);
+
+	            var inputField = document.createElement("input");
+	            inputField.setAttribute("name", "term");
+							inputField.className = "form-control";
+							form.appendChild(inputField);
+
+							var submitButton = document.createElement("input");
+							submitButton.innerHTML = "Submit";
+							submitButton.className = "btn btn-primary";
+							submitButton.setAttribute("type", "submit");
+							form.appendChild(submitButton);
+	        }
+	        else {
+	            tagsHeader.innerHTML = "Tags";
+	            // Get tags
+	            var formData = new FormData();
+	            formData.append("fields", category);
+	            ajaxPostForm("bgrequesttags.php", formData)
+	                .then(data => {
+	                    tags.innerHTML = "";
+	                    for (var tag of data.tags) {
+	                        var tagButton = document.createElement("button");
+	                        tagButton.innerHTML = tag;
+	                        tagButton.className = "btn btn-secondary";
+	                        tagButton.setAttribute("data-tag", tag);
+	                        tagButton.onclick = function(event) {
+	                            var formDataTag = new FormData();
+	                            formDataTag.append("fields", category);
+	                            formDataTag.append("term", event.target.getAttribute("data-tag"));
+	                            ajaxPostFormPage("bgquery.php", formDataTag);
+	                        };
+	                        tags.appendChild(tagButton);
+	                    }
+	                }
+	            );
+	        }
 				}
 
 				// GET helper function
