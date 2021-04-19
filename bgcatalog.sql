@@ -1,1 +1,0 @@
-SELECT  * FROM arzknkmy_bgcatalog.painting ORDER BY `pntindex` ASC LIMIT 1000;
