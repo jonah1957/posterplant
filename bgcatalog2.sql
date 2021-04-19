@@ -1,1 +1,0 @@
-DELETE FROM painting WHERE 'pntindex' ='121';
